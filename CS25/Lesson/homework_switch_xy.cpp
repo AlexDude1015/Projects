@@ -1,5 +1,7 @@
 #include <iostream>
 
+using namespace std;
+
 int main(){
 
     int num_one = 2;
