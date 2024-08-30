@@ -1,0 +1,14 @@
+Common Errors:
+
+    if-else: 
+        * In a function, a return statement doesn't exist if the "if condition" is not true.
+    
+    switch-case:
+        * Without a break statement, the compiler will continue executing subsequent statements until it reaches a break.
+    
+    while:
+        * The loop runs on forever because the condition is never false.
+    
+    for loop:
+        * In a nested for loop, the index uses the same variable "i".
+
