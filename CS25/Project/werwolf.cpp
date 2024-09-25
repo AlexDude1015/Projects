@@ -28,16 +28,22 @@ class Player
         }
 };
 
-void get_classmate_names(std::vector<std::string> &classmates)
+void get_classmate_names(std::vector<Player> &person)
 {
-     {"Parsa Faraji", "Connie Zeng", "Zakaria Bouaddou", 
+    std::vector<std::string> classmates = {"Parsa Faraji", "Connie Zeng", "Zakaria Bouaddou", 
     "Oliver Richards", "Arnav Sharma", "Matteo Brownlow", 
     "Alexander Li", "Glenn Mah", "Jimmy Hsu", "Ali Saremi"};
+
+    for(int i = 0; i < classmates.size(); i++)
+    {
+        person.push_back();
+    }
 }
 
 int main()
 {
-    std::vector<std::string> classmates;
+    std::vector<Player> person;
+    get_classmate_names(person);
     
 
     return 0;
