@@ -66,12 +66,13 @@ void add_classmates_to_game(std::vector<Player> &player)
     }
 }
 
+//Randomly assigns each user a role.
 void assign_roles(std::vector<Player> &player)
 {
     std::srand(std::time(0));
 
     //Assigns the werewolf
-    int werewolf_index = 
+    int werewolf_index = std::rand() % player.size();
     player[werewolf_index].role = WEREWOLF;
 
     //Assigns the seer
@@ -132,16 +133,67 @@ void print_alive_players(std::vector<Player> &player)
 //Groups all the set up functions for clarity
 void game_set_up(std::vector<Player> &player)
 {
-    add_user_to_game(player);
+    //add_user_to_game(player);
     add_classmates_to_game(player);
     assign_roles(player);
     assign_alive(player);
-    print_alive_players(player);
 }
+
 
 void get_player_role(std::vector<Player> &player)
 {
     std::cout << "Your role is " << global_role_names[player[0].role] << std::endl;   
+}
+
+//Werewolf picks target
+void werewolf_attack(std::vector<Player> &player)
+{
+    int dead_player_index = 0;
+    if (player[0].role == WEREWOLF)
+    {
+        do
+        {
+            std::cout << "Who do you want to kill? Enter their index: ";
+            std::cin >> dead_player_index;
+        }
+        while(player[dead_player_index].role == WEREWOLF);
+        player[dead_player_index].is_alive = false;
+    }
+    else
+    {
+        do
+        {
+            dead_player_index = std::rand() % player.size();
+        } 
+        while (player[dead_player_index].role == WEREWOLF);
+        player[dead_player_index].is_alive = false;
+    }
+}
+
+void seer_prophecy(std::vector<Player> &player)
+{
+    int inspect_player_index;
+    static int werewolf_index = NULL;
+    if (player[0].role == SEER)
+    {
+        std::cout << "Who do you wish to look into? Enter their index: ";
+        std::cin >> inspect_player_index;
+        std::cout << "\n" << player[inspect_player_index].get_name() << " is a " << global_role_names[player[inspect_player_index].role];
+    }
+    else
+    {
+        
+    }
+
+}
+
+void night_phase(std::vector<Player> &player)
+{
+    std::cout << "Night falls...\n";
+
+    werewolf_attack(player);
+
+    
 }
 
 int main()
@@ -150,11 +202,12 @@ int main()
     
     //Sets up game
     game_set_up(player);
-    get_player_role(player);
+    //get_player_role(player);
 
     //Starts game
-    
+    print_alive_players(player);
 
+    night_phase(player);
 
     return 0;
 }
