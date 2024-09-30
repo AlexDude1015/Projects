@@ -11,29 +11,41 @@
 #include <iomanip>
 #include <chrono>
 #include <thread>
+#include "werewolf.h"
 
-//Global variables
-enum Role {VILLAGER, WEREWOLF, SEER};
-std::string global_role_names[] = {"Villager", "Werewolf", "Seer"};
-
-class Player 
+int main()
 {
-    public:
-        std::string name;
-        bool is_alive;
-        Role role;
-        Player(std::string user_input)
-        {
-            name = user_input;
-        }
+    std::vector<Player> player;
+    //Sets up game
+    game_setup(player);
+    //Loops each round until somebody wins
+    int werewolf_index = get_werewolf_index(player);
+    while(!check_win_condition(player,werewolf_index))
+    {
+        int werewolf_target, seer_target;
+        int seer_discovered_werewolf = -1;
 
-};
+        night_phase(player, werewolf_target, seer_target, seer_discovered_werewolf);
+        day_phase(player, werewolf_target, seer_target, seer_discovered_werewolf);
+    }
+    //Victory prompt
+    std::cout << "Game over!\n";
+    if (player[werewolf_index].is_alive)
+    {
+        std::cout << "The werewolf won...\n";
+    }
+    else
+    {
+        std::cout << "The villagers won!\n";
+    }
+    return 0;
+}
 
 //Adds the user to the game
 void add_user_to_game(std::vector<Player> &player)
 {
     std::string user_name;
-    std::cout << "Please enter your first name: ";
+    std::cout << "Please enter your first name to start the game: ";
     std::getline (std::cin, user_name);
     std::cout << "\n";
     Player temp_user(user_name);
@@ -132,7 +144,7 @@ void print_alive_players(const std::vector<Player> &player)
 //Prints the player's role
 void get_player_role(const std::vector<Player> &player)
 {
-    std::cout << "Your role is " << global_role_names[player[0].role] << std::endl;
+    std::cout << "Your role is " << convert_role_to_string(player[0].role) << "\n\n";
     std::this_thread::sleep_for(std::chrono::seconds(1));   
 }
 
@@ -148,14 +160,14 @@ bool check_win_condition(const std::vector<Player> &player, int werewolf_index)
         }
     }
     
-    //Game over because the werewolf died
+    //Game over because the werewolf died or enough villagers died
     if ((!player[werewolf_index].is_alive) || (alive_players_count <= 1))
     {
         return true;
     }
     else
     {
-        false;
+        return false;
     }
 }
 
@@ -214,7 +226,7 @@ int seer_player(std::vector<Player> &player)
     {
         std::cout << "You picked yourself. The village is fucked.\n";
     }
-    std::cout << "You picked " << player[seer_target].name << " who is a " << global_role_names[player[seer_target].role] << ".\n"; 
+    std::cout << "You picked " << player[seer_target].name << " who is a " << convert_role_to_string(player[seer_target].role) << ".\n"; 
     return seer_target;
 }
 
@@ -235,9 +247,9 @@ int seer_ai(std::vector<Player> &player)
 //First phase of the game
 void night_phase(std::vector<Player> &player, int &werewolf_target, int &seer_target, int &seer_discovered_werewolf)
 {
-    std::cout << "Night encroaches...\n";
+    std::cout << "Night falls...\n";
+    print_night_time();
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    
     //Werewolf picks target
     if (player[0].role == WEREWOLF)
     {
@@ -248,7 +260,6 @@ void night_phase(std::vector<Player> &player, int &werewolf_target, int &seer_ta
         werewolf_target = werewolf_ai(player);
     }
     player[werewolf_target].is_alive = false;
-
     //Seer picks target
     if (player[0].role == SEER && player[0].is_alive)
     {
@@ -262,10 +273,8 @@ void night_phase(std::vector<Player> &player, int &werewolf_target, int &seer_ta
     {
         seer_discovered_werewolf = seer_target;
     }
-
     std::cout << "The werewolf kills " << player[werewolf_target].name << ".\n";
     std::this_thread::sleep_for(std::chrono::seconds(1));
-
     if (seer_discovered_werewolf != -1)
     {
         std::cout << "The seer has discovered " << player[seer_target].name << " to be the werewolf.\n";
@@ -275,7 +284,7 @@ void night_phase(std::vector<Player> &player, int &werewolf_target, int &seer_ta
         std::cout << "The seer did not discover the werewolf.\n";
     }
     std::cout << "\n";
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 //Player votes somebody out
@@ -286,7 +295,6 @@ int vote_player(const std::vector<Player> &player)
     std::cout << "Vote somebody out: ";
     std::cin >> vote_target;
     std::cout << "\n";
-
     //Edgecase if player votes dead person
     while (!player[vote_target].is_alive)
     {
@@ -323,9 +331,8 @@ void day_phase(std::vector<Player> &player, int werewolf_target, int seer_target
 {
     int vote_target_index;
     std::cout << "Daytime has arrived...\n";
+    print_day_time();
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    
-
     std::cout << "Voting will commence. Each villager will vote to execute the suspected werewolf.\n";
     std::this_thread::sleep_for(std::chrono::seconds(1));
     if (player[0].is_alive)
@@ -338,43 +345,62 @@ void day_phase(std::vector<Player> &player, int werewolf_target, int seer_target
     }
     std::cout << player[vote_target_index].name << " has been chosen and executed.\n";
     player[vote_target_index].is_alive = false;
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    print_alive_players(player);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
+
+//Organizes all setup functions
 void game_setup(std::vector<Player> &player)
 {
     add_user_to_game(player);
     add_classmates_to_game(player);
     assign_roles(player);
     assign_alive(player);
-    get_player_role(player);
-    print_alive_players(player);    
+    get_player_role(player);   
 }
 
-int main()
+//Converts enumeration to string
+std::string convert_role_to_string(Role role)
 {
-    std::vector<Player> player;
-    //Sets up game
-    game_setup(player);
-    //Loops each round until somebody wins
-    int werewolf_index = get_werewolf_index(player);
-    while(!check_win_condition(player,werewolf_index))
-    {
-        int werewolf_target, seer_target;
-        int seer_discovered_werewolf = -1;
-
-        night_phase(player, werewolf_target, seer_target, seer_discovered_werewolf);
-        day_phase(player, werewolf_target, seer_target, seer_discovered_werewolf);
-    }
-    //Victory prompt
-    std::cout << "Game over!\n";
-    if (player[werewolf_index].is_alive)
-    {
-        std::cout << "The werewolf won...\n";
-    }
-    else
-    {
-        std::cout << "The villagers won!\n";
-    }
-    return 0;
+    const std::string role_names[] = {"Villager", "Werewolf", "Seer"};
+    return role_names[role];
 }
+
+void print_night_time()
+{
+    std::cout << "             *          *    \n";
+    std::cout << "        *           *        *\n";
+    std::cout << "   *          *    *         *\n";
+    std::cout << "      *      *\n";
+    std::cout << "          _________\n";
+    std::cout << "         /        /\\\n";
+    std::cout << "        /        /  \\\n";
+    std::cout << "       /________/____\\\n";
+    std::cout << "      |        |      |\n";
+    std::cout << "      |  _  _  |  []  |\n";
+    std::cout << "      | |_|_|  |      |\n";
+    std::cout << "      |________|______|\n";
+    std::cout << "\n";
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+}
+
+void print_day_time()
+{
+    std::cout << "        *****       \n";
+    std::cout << "     **       **    \n";
+    std::cout << "    *           *   \n";
+    std::cout << "    *           *   \n";
+    std::cout << "     **       **    \n";
+    std::cout << "        *****       \n";
+    std::cout << "\n";
+    std::cout << "          _________\n";
+    std::cout << "         /        /\\\n";
+    std::cout << "        /        /  \\\n";
+    std::cout << "       /________/____\\\n";
+    std::cout << "      |        |      |\n";
+    std::cout << "      |  _  _  |  []  |\n";
+    std::cout << "      | |_|_|  |      |\n";
+    std::cout << "      |________|______|\n";
+    std::cout << "\n";
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+}
+
