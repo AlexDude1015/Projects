@@ -1,21 +1,18 @@
+//The werewolf game is about survival. In the beginning, one random villager is the werewolf, and another is the seer.
+//Each night, the werewolf kills a villager, and the seer tries to reveal the werewolf. The following day, the entire
+//village votes on the suspected werewolf. That person is executed, and the next round begins...
+//The game ends when the werewolf is killed, or one villager is left.
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <ctime>
 #include <cstdlib>
 #include <iomanip>
+#include <chrono>
+#include <thread>
 
-/* 
-Requirements:
-1) List of names
-2) Class for players
-3) Assigning roles randomly
-4) Display of players
-5) Actions to vote, accused, and seek.
-6) Instructions.
-7) End game condition.
-*/
-
+//Global variables
 enum Role {VILLAGER, WEREWOLF, SEER};
 std::string global_role_names[] = {"Villager", "Werewolf", "Seer"};
 
@@ -25,10 +22,6 @@ class Player
         std::string name;
         bool is_alive;
         Role role;
-        std::string get_name()
-        {
-            return name;
-        }
         Player(std::string user_input)
         {
             name = user_input;
@@ -40,7 +33,7 @@ class Player
 void add_user_to_game(std::vector<Player> &player)
 {
     std::string user_name;
-    std::cout << "Please enter your first and last name: ";
+    std::cout << "Please enter your first name: ";
     std::getline (std::cin, user_name);
     std::cout << "\n";
     Player temp_user(user_name);
@@ -51,9 +44,11 @@ void add_user_to_game(std::vector<Player> &player)
 void add_classmates_to_game(std::vector<Player> &player)
 {
     //Stores the classmate's names. Adding or deleting names will affect the player count.
-    std::string classmates[] = {"Parsa Faraji", "Connie Zeng", "Zakaria Bouaddou", 
-    "Oliver Richards", "Arnav Sharma", "Matteo Brownlow", 
-    "Alexander Li", "Glenn Mah", "Jimmy Hsu", "Ali Saremi"};
+    std::string classmates[] = {"Parsa", "Connie", "Zakaria", "Oliver",
+                                "Arnav", "Matteo", "Glenn", "Jimmy", "Orin", 
+                                "Sergio", "Delina", "Saurav", "Luwam",
+                                "Kailash", "Issac", "Marco", "Maya",
+                                "Ahmed", "Jackson", "Oluwaseyi", "Victoria"};
 
     //Stores the element size of the classmate array.
     int classmates_size = (sizeof(classmates)/sizeof(classmates[0]));
@@ -107,33 +102,38 @@ void assign_alive(std::vector<Player> &player)
 //Prints out living players
 void print_alive_players(const std::vector<Player> &player)
 {
-    //Counts living players
-    int living_players = 0;
-
-    //Formats the printing
-    std::cout << "Living Players:" << "\n";
+    std::cout << "\nLiving Players:" << "\n";
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::vector<int> living_players;
     for (int i = 0; i < player.size(); i++)
     {
-        if (player[i].is_alive == true)
+        if (player[i].is_alive)
         {
-            std::cout << std::left << "(" << i << ")";
-            std::cout << std::setw(20) << std::left << player[i].name;
-            ++living_players;
+            living_players.push_back(i);
         }
+    }
+    int next_line_count = 0;
+    for (int i = 0; i < living_players.size(); i++)
+    {
+        std::cout << std::left << "(" << living_players[i] << ")";
+        std::cout << std::setw(20) << std::left << player[living_players[i]].name;
+        next_line_count++;
 
-        //Creates a new line after every three players
-        if (living_players % 3 == 0)
+        if (next_line_count == 4)
         {
-            std::cout << "\n";
+            std::cout << '\n';
+            next_line_count = 0;
         }
     }
     std::cout << "\n\n";
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 //Prints the player's role
 void get_player_role(std::vector<Player> &player)
 {
-    std::cout << "Your role is " << global_role_names[player[0].role] << std::endl;   
+    std::cout << "Your role is " << global_role_names[player[0].role] << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(1));   
 }
 
 //Game stops if werewolf dies or only one or less villager remains
@@ -147,12 +147,21 @@ bool check_win_condition(const std::vector<Player> &player, int werewolf_index)
             alive_players_count++;
         }
     }
-    return (!player[werewolf_index].is_alive || (alive_players_count <= 1));
+    
+    //Game over because the werewolf died
+    if ((!player[werewolf_index].is_alive) || (alive_players_count <= 1))
+    {
+        return true;
+    }
+    else
+    {
+        false;
+    }
 }
 
+//Gets the player index of the werewolf
 int get_werewolf_index(const std::vector<Player> &player)
 {
-    int werewolf_index;
     for (int i = 0; i < player.size(); i++)
     {
         if (player[i].role == WEREWOLF)
@@ -166,7 +175,7 @@ int get_werewolf_index(const std::vector<Player> &player)
 //Player picks a villager to kill
 int werewolf_player(std::vector<Player> &player)
 {
-    int werewolf_target;
+    int werewolf_target = -1;
     print_alive_players(player);
     std::cout << "Pick a player to kill. Please enter their index number: \n";
     std::cin >> werewolf_target;
@@ -176,6 +185,7 @@ int werewolf_player(std::vector<Player> &player)
         std::cout << "Please pick another target: ";
         std::cin >> werewolf_target;
     }
+    std::cout << "You killed " << player[werewolf_target].name << ".\n"; 
     return werewolf_target;
 }
 
@@ -198,12 +208,13 @@ int seer_player(std::vector<Player> &player)
 {
     int seer_target;
     print_alive_players(player);
-    std::cout << "Pick a player to kill. Please enter their index number: \n";
+    std::cout << "Pick a person to inspect. Please enter their index number: \n";
     std::cin >> seer_target;
     if (seer_target == 0)
     {
         std::cout << "You picked yourself. The village is fucked.\n";
     }
+    std::cout << "You picked " << player[seer_target].name << " who is a " << global_role_names[player[seer_target].role] << ".\n"; 
     return seer_target;
 }
 
@@ -225,6 +236,7 @@ int seer_ai(std::vector<Player> &player)
 void night_phase(std::vector<Player> &player, int &werewolf_target, int &seer_target, int &seer_discovered_werewolf)
 {
     std::cout << "Night encroaches...\n";
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     
     //Werewolf picks target
     if (player[0].role == WEREWOLF)
@@ -250,6 +262,20 @@ void night_phase(std::vector<Player> &player, int &werewolf_target, int &seer_ta
     {
         seer_discovered_werewolf = seer_target;
     }
+
+    std::cout << "The werewolf kills " << player[werewolf_target].name << ".\n";
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    if (seer_discovered_werewolf != -1)
+    {
+        std::cout << "The seer has discovered " << player[seer_target].name << " to be the werewolf.\n";
+    }
+    else
+    {
+        std::cout << "The seer did not discover the werewolf.\n";
+    }
+    std::cout << "\n";
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 //Player votes somebody out
@@ -292,22 +318,16 @@ int vote_ai(const std::vector<Player> &player, int seer_discovered_werewolf)
     }
 }
 
+//Second phase of the game
 void day_phase(std::vector<Player> &player, int werewolf_target, int seer_target, int seer_discovered_werewolf)
 {
     int vote_target_index;
     std::cout << "Daytime has arrived...\n";
-    std::cout << "Last night, the werewolf killed " << player[werewolf_target].name << ".\n";
-
-    if (seer_discovered_werewolf != -1)
-    {
-        std::cout << "The seer has discovered " << player[seer_target].name << " to be the werewolf.\n";
-    }
-    else
-    {
-        std::cout << "The seer did not find the werewolf last night.\n";
-    }
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    
 
     std::cout << "Voting will commence. Each villager will vote to execute the suspected werewolf.\n";
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     if (player[0].is_alive)
     {
         vote_target_index = vote_player(player);
@@ -318,22 +338,26 @@ void day_phase(std::vector<Player> &player, int werewolf_target, int seer_target
     }
     std::cout << player[vote_target_index].name << " has been chosen and executed.\n";
     player[vote_target_index].is_alive = false;
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    print_alive_players(player);
 }
-
-int main()
+void game_setup(std::vector<Player> &player)
 {
-    std::vector<Player> player;
-    
-    //Sets up game
     add_user_to_game(player);
     add_classmates_to_game(player);
     assign_roles(player);
     assign_alive(player);
     get_player_role(player);
     print_alive_players(player);    
+}
 
+int main()
+{
+    std::vector<Player> player;
+    //Sets up game
+    game_setup(player);
+    //Loops each round until somebody wins
     int werewolf_index = get_werewolf_index(player);
-
     while(!check_win_condition(player,werewolf_index))
     {
         int werewolf_target, seer_target;
@@ -342,7 +366,7 @@ int main()
         night_phase(player, werewolf_target, seer_target, seer_discovered_werewolf);
         day_phase(player, werewolf_target, seer_target, seer_discovered_werewolf);
     }
-
+    //Victory prompt
     std::cout << "Game over!\n";
     if (player[werewolf_index].is_alive)
     {
