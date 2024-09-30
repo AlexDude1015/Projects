@@ -29,7 +29,9 @@ void get_player_role(const std::vector<Player> &player)
 ---
 
 **Naming Conventions**
+
 The naming convention I used was **snake case**. Furthermore, I gave each variable specific names to avoid bugs later down the road.
+
 ```cpp
 //AI picks a villager to kill
 int werewolf_ai(std::vector<Player> &player)
