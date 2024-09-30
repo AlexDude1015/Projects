@@ -11,6 +11,7 @@ The game ends when the werewolf is killed, or all but one villager is alive.
 
 ### Project Requirements:
 
+---
 
 **Variable & Constants**
 
@@ -25,6 +26,7 @@ void get_player_role(const std::vector<Player> &player)
 }
 ```
 
+---
 
 **Naming Conventions**
 
