@@ -11,42 +11,40 @@ The game ends when the werewolf is killed, or all but one villager is alive.
 
 ### Project Requirements:
 
+
 **Variable & Constants**
 
 Below is a function that prints the living players. Whenever a function is only accessing a variable, its parameters are **const** so that data isn't accidentally altered.
 
 ```cpp
-//Prints out living players
-void print_alive_players(const std::vector<Player> &player)
+//Prints the player's role
+void get_player_role(const std::vector<Player> &player)
 {
-    std::cout << "\nLiving Players:" << "\n";
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << "Your role is " << global_role_names[player[0].role] << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(1));   
+}
+```
+
+
+**Naming Conventions**
+
+The naming convention I used was **snake case**. Furthermore, I gave each variable specific names to avoid bugs later down the road.
+
+```cpp
+//AI picks a villager to kill
+int werewolf_ai(std::vector<Player> &player)
+{
     std::vector<int> living_players;
     for (int i = 0; i < player.size(); i++)
     {
-        if (player[i].is_alive)
+        if (player[i].is_alive && player[i].role != WEREWOLF)
         {
             living_players.push_back(i);
         }
     }
-    int next_line_count = 0;
-    for (int i = 0; i < living_players.size(); i++)
-    {
-        std::cout << std::left << "(" << living_players[i] << ")";
-        std::cout << std::setw(20) << std::left << player[living_players[i]].name;
-        next_line_count++;
-        if (next_line_count == 4)
-        {
-            std::cout << '\n';
-            next_line_count = 0;
-        }
-    }
-    std::cout << "\n\n";
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    return living_players[std::rand() % living_players.size()];
 }
 ```
-
-**Naming Conventions**
 
 **Mathamatical Expressions**
 

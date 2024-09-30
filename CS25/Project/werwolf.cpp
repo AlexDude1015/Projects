@@ -130,7 +130,7 @@ void print_alive_players(const std::vector<Player> &player)
 }
 
 //Prints the player's role
-void get_player_role(std::vector<Player> &player)
+void get_player_role(const std::vector<Player> &player)
 {
     std::cout << "Your role is " << global_role_names[player[0].role] << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));   
