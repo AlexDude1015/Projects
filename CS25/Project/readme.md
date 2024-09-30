@@ -51,7 +51,7 @@ int werewolf_ai(std::vector<Player> &player)
 
 **Mathamatical Expressions**
 
-The order of arithmatic starts from left to right. The code below is a statement that returns a random element of an array. It works because the statement is read from the left to right, and values in brackets are higher in the order of operations.
+The order of arithmatic starts from left to right. The code below is a statement that returns a random element of an array. It works because the statement is read from the left to right, and values in brackets are higher in the order of operations. 
 
 ```cpp
 return living_players[std::rand() % living_players.size()];
@@ -61,6 +61,13 @@ return living_players[std::rand() % living_players.size()];
 ---
 
 **Console Input/Output**
+
+Outputs can be modified with the #iomanip library. Functions like `setw(0)` modifies an output's minimum length, and `left` aligns content to the left.
+
+
+```cpp
+std::cout << std::setw(20) << std::left << player[living_players[i]].name;
+```
 
 ---
 
