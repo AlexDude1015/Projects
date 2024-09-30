@@ -1,5 +1,7 @@
 # Werewolf game
 
+-
+
 **Intro:**
 
 The werewolf game is about survival. In the beginning, one random villager is the werewolf, and another is the seer.
