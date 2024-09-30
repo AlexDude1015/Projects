@@ -10,4 +10,6 @@ village votes on the suspected werewolf. That person is executed, and the next r
 
 The game ends when the werewolf is killed, or all but one villager is alive.
 
+![Setup](setup.png "Whatever")
+
 
