@@ -283,9 +283,49 @@ void game_setup(std::vector<Player> &player, std::string user_name)
 
 **Namespaces & Organizing Code**
 
+I organized my code by giving each function a distinct name. Unfortunately, my last class, CIS06, skipped Namespaces. I will be delighted to apply it once I learn it.
+
+```cpp
+void print_day_time();
+void game_setup(std::vector<Player> &player, std::string user_name);
+std::string convert_role_to_string(Role role);
+void add_user_to_game(std::vector<Player> &player);
+void add_classmates_to_game(std::vector<Player> &player);
+void assign_roles(std::vector<Player> &player);
+void assign_alive(std::vector<Player> &player);
+void print_alive_players(const std::vector<Player> &player);
+void get_player_role(const std::vector<Player> &player);
+bool check_win_condition(const std::vector<Player> &player, int werewolf_index);
+int get_werewolf_index(const std::vector<Player> &player);
+int werewolf_player(std::vector<Player> &player);
+int werewolf_ai(std::vector<Player> &player);
+int seer_player(std::vector<Player> &player);
+int seer_ai(std::vector<Player> &player);
+void night_phase(std::vector<Player> &player, int &werewolf_target, int &seer_target, int &seer_discovered_werewolf);
+int vote_player(const std::vector<Player> &player);
+int vote_ai(const std::vector<Player> &player, int seer_discovered_werewolf);
+void day_phase(std::vector<Player> &player, int werewolf_target, int seer_target, int seer_discovered_werewolf);
+void game_setup(std::vector<Player> &player);
+void print_night_time();
+```
 ---
 
 **Debugging**
 
----
+There were numerous user inputs that could foreseeably break the code. In one instance, if the player was the werewolf, they could commit suicide to end the game. I created a while loop to prevent that.
+
+```cpp
+//Player picks a villager to kill
+
+    std::cout << "Pick a player to kill. Please enter their index number: \n";
+    std::cin >> werewolf_target;
+    while (werewolf_target == 0)
+    {
+        std::cout << "You cannot kill yourself because werewolves have excellent health care coverage.\n";
+        std::cout << "Please pick another target: ";
+        std::cin >> werewolf_target;
+    }
+    std::cout << "You killed " << player[werewolf_target].name << ".\n"; 
+
+```
 
