@@ -51,24 +51,11 @@ int werewolf_ai(std::vector<Player> &player)
 
 **Mathamatical Expressions**
 
-The code below is a "for loop" that creates a new line everytime it prints four players. The variable `next_line_count` is initialized to `0` outside of the loop. Then, it is incremented each pass. Whenever `next_line_count` is `4`, a new line starts and the counter restarts.
+The order of arithmatic starts from left to right. The code below is a statement that returns a random element of an array. It works because the statement is read from the left to right, and values in brackets are higher in the order of operations.
 
 ```cpp
-int next_line_count = 0;
-    for (int i = 0; i < living_players.size(); i++)
-    {
-        std::cout << std::left << "(" << living_players[i] << ")";
-        std::cout << std::setw(20) << std::left << player[living_players[i]].name;
-        next_line_count++;
-
-        if (next_line_count == 4)
-        {
-            std::cout << '\n';
-            next_line_count = 0;
-        }
-    }
+    return living_players[std::rand() % living_players.size()];
 ```
-
 
 
 ---
@@ -120,6 +107,24 @@ int next_line_count = 0;
 ---
 
 **Loop Variants & Nesting**
+
+The code below is a "for loop" that creates a new line everytime it prints four players. The variable `next_line_count` is initialized to `0` outside of the loop. Then, it is incremented each pass. Whenever `next_line_count` is `4`, a new line starts and the counter restarts.
+
+```cpp
+int next_line_count = 0;
+    for (int i = 0; i < living_players.size(); i++)
+    {
+        std::cout << std::left << "(" << living_players[i] << ")";
+        std::cout << std::setw(20) << std::left << player[living_players[i]].name;
+        next_line_count++;
+
+        if (next_line_count == 4)
+        {
+            std::cout << '\n';
+            next_line_count = 0;
+        }
+    }
+```
 
 ---
 
