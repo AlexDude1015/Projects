@@ -71,25 +71,88 @@ std::cout << std::setw(20) << std::left << player[living_players[i]].name;
 
 ---
 
-**Stand Library Use**
+**Standard Library Use**
 
+`<string>` was one of the libraries used in my project. To define a variable or function with the data type, it needs a scope resolution operator.
+
+```cpp
+#include <string>
+
+std::string global_role_names[] = {"Villager", "Werewolf", "Seer"};
+```
 ---
 
 **Comments**
+
+Every function in my program has a comment on top that describes what it does.
+
+```cpp
+//Prints the player's role
+void get_player_role(const std::vector<Player> &player)
+{
+    std::cout << "Your role is " << global_role_names[player[0].role] << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(1));   
+}
+```
 
 ---
 
 
 **Fundamental Datatype**
 
+I picked datatypes that made my program simple and clear. For instance, the easiest way to store a player's name was a string. A player's alive/dead status is binary, so it's stored in a boolean. Lastly, roles are stored as an enumeration because it made the roles, WEREWOLF, SEER, and VILLAGER, clear when it was manipilated in other functions.
+
+```cpp
+class Player 
+{
+    public:
+        std::string name;
+        bool is_alive;
+        Role role;
+        Player(std::string user_input)
+        {
+            name = user_input;
+        }
+
+};
+```
 ---
 
-
 **Initialization & Working with Numbers**
+
+The code below is a "for loop" that creates a new line everytime it prints four players. The variable `next_line_count` is initialized to `0` outside of the loop. Then, it is incremented each pass. Whenever `next_line_count` is `4`, a new line starts and the counter restarts.
+
+```cpp
+int next_line_count = 0;
+    for (int i = 0; i < living_players.size(); i++)
+    {
+        std::cout << std::left << "(" << living_players[i] << ")";
+        std::cout << std::setw(20) << std::left << player[living_players[i]].name;
+        next_line_count++;
+
+        if (next_line_count == 4)
+        {
+            std::cout << '\n';
+            next_line_count = 0;
+        }
+    }
+```
 
 ---
 
 **Random Numbers & Formatting Output**
+
+`rand()` is a pseudo-random number generator meaning it's not truly random. The program requires external inputs as a seed which is why `srand(time(0))` is nessesary. 
+
+Since `rand()` could generate a number over two billion, a modulus operator can format the output to a desirable size. `player.size()` was ideal, since a random number would generate between zero and one less than the total size of the vector.
+
+```cpp
+std::srand(std::time(0));
+
+//Assigns the werewolf
+int werewolf_index = std::rand() % player.size();
+player[werewolf_index].role = WEREWOLF;
+```
 
 ---
 
@@ -115,23 +178,7 @@ std::cout << std::setw(20) << std::left << player[living_players[i]].name;
 
 **Loop Variants & Nesting**
 
-The code below is a "for loop" that creates a new line everytime it prints four players. The variable `next_line_count` is initialized to `0` outside of the loop. Then, it is incremented each pass. Whenever `next_line_count` is `4`, a new line starts and the counter restarts.
 
-```cpp
-int next_line_count = 0;
-    for (int i = 0; i < living_players.size(); i++)
-    {
-        std::cout << std::left << "(" << living_players[i] << ")";
-        std::cout << std::setw(20) << std::left << player[living_players[i]].name;
-        next_line_count++;
-
-        if (next_line_count == 4)
-        {
-            std::cout << '\n';
-            next_line_count = 0;
-        }
-    }
-```
 
 ---
 
