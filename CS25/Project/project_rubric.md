@@ -252,6 +252,33 @@ while (!player[vote_target].is_alive)
 
 **Functions**
 
+Setting up the game requires manipulating a referenced vector in various functions. This practice has two advantages. One, it reduces memory, and second, it manipulated multiple values.
+
+In addition, my `game_set()` function is overloaded for two different use cases. The first version gives a lengthy introduction. The second version is for me to quickly test.
+
+```cpp
+//Organizes all setup functions
+void game_setup(std::vector<Player> &player)
+{
+    add_user_to_game(player);
+    add_classmates_to_game(player);
+    assign_roles(player);
+    assign_alive(player);
+    get_player_role(player);   
+}
+
+//Quick set that avoids entering name
+void game_setup(std::vector<Player> &player, std::string user_name)
+{
+    Player temp_user(user_name);
+    player.push_back(temp_user);
+    add_classmates_to_game(player);
+    assign_roles(player);
+    assign_alive(player);
+    get_player_role(player);   
+
+}
+```
 ---
 
 **Namespaces & Organizing Code**

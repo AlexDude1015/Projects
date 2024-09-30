@@ -16,6 +16,7 @@
 int main()
 {
     std::vector<Player> player;
+
     //Sets up game
     game_setup(player);
     //Loops each round until somebody wins
@@ -356,6 +357,18 @@ void game_setup(std::vector<Player> &player)
     assign_roles(player);
     assign_alive(player);
     get_player_role(player);   
+}
+
+//Quick set that avoids entering name
+void game_setup(std::vector<Player> &player, std::string user_name)
+{
+    Player temp_user(user_name);
+    player.push_back(temp_user);
+    add_classmates_to_game(player);
+    assign_roles(player);
+    assign_alive(player);
+    get_player_role(player);   
+
 }
 
 //Converts enumeration to string

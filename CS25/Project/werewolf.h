@@ -20,6 +20,7 @@ class Player
 };
 
 void print_day_time();
+void game_setup(std::vector<Player> &player, std::string user_name);
 std::string convert_role_to_string(Role role);
 void add_user_to_game(std::vector<Player> &player);
 void add_classmates_to_game(std::vector<Player> &player);
