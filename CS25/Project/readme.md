@@ -1,4 +1,5 @@
-# Werewolf game by Alexander Li
+# Werewolf Game 
+### By Alexander Li
 
 **Intro:**
 
