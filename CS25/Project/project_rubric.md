@@ -267,7 +267,7 @@ void game_setup(std::vector<Player> &player)
     get_player_role(player);   
 }
 
-//Quick set that avoids entering name
+//Quick set up
 void game_setup(std::vector<Player> &player, std::string user_name)
 {
     Player temp_user(user_name);
