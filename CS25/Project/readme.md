@@ -11,7 +11,40 @@ The game ends when the werewolf is killed, or all but one villager is alive.
 
 ### Project Requirements:
 
+**Variable & Constants**
 
+**Naming Conventions**
 
+**Mathamatical Expressions**
+
+**Console Input/Output**
+
+**Stand Library Use**
+
+**Comments**
+
+**Fundamental Datatype**
+
+**Initialization & Working with Numbers**
+
+**Random Numbers & Formatting Output**
+
+**Data Types Size & Limits**
+
+**Boolean & Comparisons**
+
+**String & Characters**
+
+**Arrays and Type Conversion**
+
+**Control Structure (if/else, loops)**
+
+**Loop Variants & Nesting**
+
+**Functions**
+
+**Namespaces & Organizing Code**
+
+**Debugging**
 
 
