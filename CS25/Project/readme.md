@@ -14,9 +14,9 @@ The game ends when the werewolf is killed, or all but one villager is alive.
 
 **Links:**
 
-video: https://www.youtube.com/watch?v=Cq9NgAr6wY4
+Video Summary: https://www.youtube.com/watch?v=Cq9NgAr6wY4
 
-Project-rubric checklist: https://github.com/AlexDude1015/Projects/blob/main/CS25/Project/project_rubric.md
+Project Rubric checklist: https://github.com/AlexDude1015/Projects/blob/main/CS25/Project/project_rubric.md
 
 
 ---
