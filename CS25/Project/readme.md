@@ -18,6 +18,7 @@ Video Summary: https://www.youtube.com/watch?v=Cq9NgAr6wY4
 
 Project Rubric checklist: https://github.com/AlexDude1015/Projects/blob/main/CS25/Project/project_rubric.md
 
+Source Code: https://github.com/AlexDude1015/Projects/blob/main/CS25/Project/werewolf.cpp
 
 ---
 
