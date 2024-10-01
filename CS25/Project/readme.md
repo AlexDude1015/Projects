@@ -12,7 +12,18 @@ The game ends when the werewolf is killed, or all but one villager is alive.
 
 ---
 
-**Setup**
+**Links:**
+
+video: https://www.youtube.com/watch?v=Cq9NgAr6wY4
+
+Project-rubric checklist: https://github.com/AlexDude1015/Projects/blob/main/CS25/Project/project_rubric.md
+
+
+---
+
+
+
+**Screenshots**
 
 The player enters their name.
 
@@ -20,15 +31,12 @@ The player enters their name.
 
 ---
 
-**Each round**
 
 The player is randomly selected as a villager, werewolf, or seer. They can target or vote other players which will impact the game.
 
 ![Rounds](rounds.png "Each round")
 
 ---
-
-**Ending**
 
 Eventually, the game will end when all but one villager remains or the werewolf was executed.
 
