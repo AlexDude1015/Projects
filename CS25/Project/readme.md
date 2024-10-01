@@ -10,6 +10,29 @@ village votes on the suspected werewolf. That person is executed, and the next r
 
 The game ends when the werewolf is killed, or all but one villager is alive.
 
-![Setup](setup.png "Whatever")
+---
+
+**Setup**
+
+The player enters their name.
+
+![Setup](setup.png "Game setup")
+
+---
+
+**Each round**
+
+The player is randomly selected as a villager, werewolf, or seer. They can target or vote other players which will impact the game.
+
+![Rounds](rounds.png "Each round")
+
+---
+
+**Ending**
+
+Eventually, the game will end when all but one villager remains or the werewolf was executed.
+
+![Ending](ending.png "Ending")
+
 
 
