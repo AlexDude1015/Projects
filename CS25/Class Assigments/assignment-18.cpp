@@ -17,7 +17,7 @@ void bubble_sort(int arr[], int size)
     {
         print_array(arr, size);
         //Each pass
-        for (int j = 0; j < (size - 1 - i); j++)
+        for (int j = 0; j < (size - 1 - i); j++) //-1: to prevent stack overflow, -i: ignores sorted elements.
         {
             if (arr[j] > arr[j+1])
             {
